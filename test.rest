@@ -1,0 +1,61 @@
+// LOCALHOST
+###
+GET http://localhost:3000/
+###
+GET http://localhost:3000/users/marisolm
+###
+GET http://localhost:3000/users
+
+### create new contact
+POST http://localhost:3000/users HTTP/1.1
+content-type: application/json
+
+{
+        "firstName": "Ileana",
+        "lastName": "Del Rio",
+        "email": "iledelrio@mex.edu",
+        "username": "iledelrio",
+        "password": "34DFkjlm/"
+}
+
+# ### update contact with specified username
+# PUT http://localhost:3000/users/username HTTP/1.1
+# content-type: application/json
+
+# {
+#     "username":"mendozahector"
+# }
+
+### delete contact with specified id
+DELETE  http://localhost:3000/users/mendozahector HTTP/1.1
+
+// RENDER
+###
+GET https://mendozahectorapi.onrender.com
+###
+GET https://mendozahectorapi.onrender.com/users/username
+###
+GET https://mendozahectorapi.onrender.com/users/username
+###
+GET https://mendozahectorapi.onrender.com/users/username
+###
+GET https://mendozahectorapi.onrender.com/username
+
+### create new contact
+POST https://mendozahectorapi.onrender.com/username HTTP/1.1
+content-type: application/json
+
+{
+    "firstName":"User", "lastName":"Tester", "email":"user@test.com", "favoriteColor":"Yellow", "birthday":"1958-08-28"
+}
+
+# ### update contact with specified username
+# PUT https://mendozahectorapi.onrender.com/users/username HTTP/1.1
+# content-type: application/json
+
+# {
+#     "favoriteColor":"Blue"
+# }
+
+### delete contact with specified id
+DELETE  https://mendozahectorapi.onrender.com/users/username HTTP/1.1
