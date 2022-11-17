@@ -108,7 +108,6 @@ const deleteContact = (req, res) => {
   const username = req.params.username;
   User.deleteOne({ username: username })
     .then((data) => {
-      console.log(data.deletedCount);
       if (data.deletedCount > 0) {
         res.status(200).send();
       } else {
