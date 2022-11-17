@@ -27,7 +27,7 @@ content-type: application/json
 # }
 
 ### delete contact with specified id
-DELETE  http://localhost:3000/users/mendozahector HTTP/1.1
+DELETE  http://localhost:3000/users/iledelrio HTTP/1.1
 
 // RENDER
 ###
@@ -58,4 +58,4 @@ content-type: application/json
 # }
 
 ### delete contact with specified id
-DELETE  https://mendozahectorapi.onrender.com/users/username HTTP/1.1
+DELETE  https://mendozahectorapi.onrender.com/users/iledelrio HTTP/1.1

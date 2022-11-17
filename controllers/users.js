@@ -108,8 +108,11 @@ const deleteContact = (req, res) => {
   const username = req.params.username;
   User.deleteOne({ username: username })
     .then((data) => {
-      if (data.acknowledge && data.deletedCount == 1) {
-        res.status(200);
+      console.log(data.deletedCount);
+      if (data.deletedCount > 0) {
+        res.status(200).send();
+      } else {
+        res.status(500).json(response.error || 'Could not delete the user. Please try again.');
       }
     })
     .catch((err) => {
