@@ -1,3 +1,4 @@
+const e = require('express');
 const db = require('../models');
 const User = db.user;
 
@@ -5,12 +6,13 @@ const User = db.user;
 const getAll = (req, res) => {
     User.find({})
       .then((data) => {
-        res.status(200)
+        res.status(200);
         res.send(data);
       })
       .catch((err) => {
+        console.log(err.message);
         res.status(500).send({
-          message: err.message || 'Could not get users from database.'
+          message: 'Could not get users from database. Please try again later.'
         });
       });
   };
@@ -19,13 +21,16 @@ const getSingle = (req, res) => {
   const username = req.params.username;
   User.find({ username: username })
     .then((data) => {
-      res.status(200)
-      res.send(data);
+      if (data === undefined || data.length == 0) {
+        res.status(400).send({ message: 'Could not find username ' + username + ' in the database.' });
+      } else {
+        res.status(200).send(data);
+      }
     })
     .catch((err) => {
+      console.log(err.message)
       res.status(500).send({
-        message: err.message || 'Error getting user from database.'
-      });
+        message: 'Error getting user from database. Please try again later.'});
     });
 };
 
@@ -51,9 +56,12 @@ const insertUser = async (req, res) => {
       res.status(201).send(r);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Could not insert the new user. Please try again later.'
-      });
+      if (err._message === 'users validation failed') {
+        res.status(400).send({ message: err.message });
+      } else {
+        console.log(err);
+        res.status(500).send({ message: 'Could not insert the new user. Please try again later.' });
+      }
     });
 };
 
@@ -108,15 +116,21 @@ const deleteContact = (req, res) => {
   const username = req.params.username;
   User.deleteOne({ username: username })
     .then((data) => {
-      if (data.deletedCount > 0) {
-        res.status(200).send();
+      if (data.acknowledged) {
+        if (data.deletedCount > 0) {
+          res.status(200).send();
+        } 
+        else {
+          res.status(400).send({ message: 'Could not find username ' + username + ' in the database.' });
+        }
       } else {
-        res.status(500).json(response.error || 'Could not delete the user. Please try again.');
+        res.status(400).send({ message: 'Could not delete the user. Not authorized.' });
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send({
-        message: err.message || 'Error deleting user from database. Please try again later.',
+        message: 'Error deleting username ' + username + ' from database. Please try again later.',
       });
     });
 };

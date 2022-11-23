@@ -1,8 +1,8 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
-    "title": "My API",
-    "description": "Developing a secure REST API that performs CRUD operations on a NoSQL database.<br><br>                  By: Hector Mendoza<br>                  [https://mendozahector.github.io/](https://mendozahector.github.io/)<br><br>                  Tech Stack:<br>                  [Node.js / Express](https://expressjs.com/en/starter/hello-world.html])<br>                  [MongoDB](https://www.mongodb.com/docs/drivers/node/current/quick-start/)<br>                  [SwaggerUI](https://www.npmjs.com/package/swagger-ui-express)",
+    "title": "My API - OpenAPI 3.0",
+    "description": "\nDeveloping a secure REST API that performs CRUD operations on a NoSQL database.\n\nBy: Hector Mendoza\n\n[mendozahector.github.io](https://mendozahector.github.io/)\n\n\n\nTech Stack:\n- [Node.js / Express](https://expressjs.com/en/starter/hello-world.html)\n- [MongoDB](https://www.mongodb.com/docs/drivers/node/current/quick-start/)\n- [Mongoose](https://www.npmjs.com/package/mongoose)\n- [SwaggerUI](https://www.npmjs.com/package/swagger-ui-express)",
     "contact": {
       "email": "hectormmendozar@outlook.com"
     },
@@ -10,7 +10,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "1.0.0"
+    "version": "1.0.2"
   },
   "servers": [
     {
@@ -18,7 +18,7 @@
       "description": "Render"
     },
     {
-      "url": "http://localhost:3000/",
+      "url": "http://localhost:3000",
       "description": "Sandox"
     }
   ],
@@ -43,30 +43,59 @@
         "summary": "Welcome message and information",
         "description": "",
         "parameters": [],
-        "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "Successful Operation: Returns main message"
+            "description": "Successful Operation - Returns main message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MainMessage"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/users/": {
+    "/users": {
       "get": {
         "tags": ["users"],
         "summary": "get all users",
         "description": "",
-        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Successful Operation: Returns all users"
+            "description": "Successful Operation - Returns all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
           }
         }
       },
@@ -77,10 +106,34 @@
         "parameters": [],
         "responses": {
           "201": {
-            "description": "Successful Operation: Returns new user ID and username"
+            "description": "Successful Operation - Returns new user ID and username",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -116,7 +169,6 @@
         "tags": ["users"],
         "summary": "get user information by username",
         "description": "",
-        "produces": ["application/json"],
         "parameters": [
           {
             "name": "username",
@@ -129,10 +181,34 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Operation: Returns user information if found"
+            "description": "Successful Operation - Returns user information if found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
           }
         }
       },
@@ -175,10 +251,113 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Operation: User deleted"
+            "description": "Successful Operation - User deleted"
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MainMessage": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Hello there!"
+          },
+          "message": {
+            "type": "string",
+            "example": "Welcome to my API!"
+          },
+          "documentation": {
+            "type": "string",
+            "example": "https://mendozahectorapi.onrender.com/api-docs/"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "object",
+            "format": "object",
+            "example": "\"6375c456caec5ce8bb60df54"
+          },
+          "username": {
+            "type": "string",
+            "example": "theUser"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "James"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "$2a$10$.yfnmuLUYJ8RPVBANuI/dOn.0q"
+          },
+          "__v": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+      "NewUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "637d6b9ba92b71e9579d3887"
+          },
+          "username": {
+            "type": "string",
+            "example": "theUser"
+          }
+        }
+      },
+      "ClientError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Invalid input. Please try again."
+          }
+        }
+      },
+      "ServerError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Server error occured. Please try again later."
           }
         }
       }

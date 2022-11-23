@@ -2,7 +2,7 @@
 ###
 GET http://localhost:3000/
 ###
-GET http://localhost:3000/users/marisolm
+GET http://localhost:3000/users/mendoza
 ###
 GET http://localhost:3000/users
 

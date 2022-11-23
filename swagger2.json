@@ -1,0 +1,187 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "My API",
+    "description": "Developing a secure REST API that performs CRUD operations on a NoSQL database.<br><br>                  By: Hector Mendoza<br>                  [https://mendozahector.github.io/](https://mendozahector.github.io/)<br><br>                  Tech Stack:<br>                  [Node.js / Express](https://expressjs.com/en/starter/hello-world.html])<br>                  [MongoDB](https://www.mongodb.com/docs/drivers/node/current/quick-start/)<br>                  [SwaggerUI](https://www.npmjs.com/package/swagger-ui-express)",
+    "contact": {
+      "email": "hectormmendozar@outlook.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://mendozahectorapi.onrender.com",
+      "description": "Render"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Sandox"
+    }
+  ],
+  "tags": [
+    {
+      "name": "main",
+      "description": "API Controller"
+    },
+    {
+      "name": "users",
+      "description": "Access to users in MongoDB"
+    },
+    {
+      "name": "not yet implemented",
+      "description": "On development"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["main"],
+        "summary": "Welcome message and information",
+        "description": "",
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successful Operation: Returns main message"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": ["users"],
+        "summary": "get all users",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful Operation: Returns all users"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "add a new user",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Successful Operation: Returns new user ID and username"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "example": "String"
+                  },
+                  "lastName": {
+                    "example": "String"
+                  },
+                  "username": {
+                    "example": "String"
+                  },
+                  "email": {
+                    "example": "String"
+                  },
+                  "password": {
+                    "example": "String"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{username}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "get user information by username",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation: Returns user information if found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["not yet implemented"],
+        "summary": "update user information by username",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "delete a user by username",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation: User deleted"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

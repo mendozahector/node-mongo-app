@@ -1,14 +1,19 @@
 {
   "name": "mymongodb",
   "version": "1.0.0",
-  "description": "",
+  "description": "My Node JS API using Mongoose with MongoDB",
   "main": "index.js",
   "scripts": {
     "test": "nodemon server.js",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "API",
+    "NodeJS",
+    "Mongoose",
+    "MongoDB"
+  ],
+  "author": "Hector Mendoza",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

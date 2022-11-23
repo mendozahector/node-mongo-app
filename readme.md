@@ -1,4 +1,4 @@
-# My Node JS API using MongoDB
+# My Node JS API using Mongoose with MongoDB
 
 API Documentation using SwaggerUI:
 
