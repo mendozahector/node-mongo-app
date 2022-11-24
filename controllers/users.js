@@ -35,8 +35,8 @@ const getSingle = (req, res) => {
 };
 
 const insertUser = async (req, res) => {
-
-  // Validate request
+  try {
+    // Validate request
   if (!req.body.username || !req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
     res.status(400).send({ message: 'Fields can not be empty!' });
     return;
@@ -53,7 +53,7 @@ const insertUser = async (req, res) => {
   // Validate password
   passwordValidation = newUser.isValidPassword(req.body.password);
   if (passwordValidation.length > 0) {
-    res.status(400).send({ message: 'Invalid password: ' + passwordValidation[0]['message'] });
+    res.status(400).send({ message: 'Invalid password: ', details: passwordValidation });
     return;
   }
 
@@ -71,11 +71,17 @@ const insertUser = async (req, res) => {
         res.status(500).send({ message: 'Could not insert the new user. Please try again later.' });
       }
     });
+  } catch(err) {
+    console.log(err);
+    res.status(500).send({ message: 'Could not insert the new user. Please try again later.' });
+  }
 };
 
 const updateContact = async (req, res) => {
-  const username = req.params.username;
-  const password = req.body.password;
+
+  try {
+    const username = req.params.username;
+    const password = req.body.password;
 
   if (!password) {
     res.status(400).send({ message: 'Password field cannot be empty' });
@@ -126,6 +132,10 @@ const updateContact = async (req, res) => {
       res.status(500).send({
         message: 'Error getting user from database. Please try again later.'});
     });
+  } catch (err) { 
+    console.log(err);
+    res.status(500).send({ message: 'Could not insert the new user. Please try again later.' });
+  }
 }
 
 const deleteContact = (req, res) => {
