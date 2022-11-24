@@ -28,7 +28,9 @@ module.exports = (mongoose) => {
   userSchema.plugin(uniqueValidator);
 
   userSchema.pre('save', async function save(next) {
-    if (!this.isModified('password')) return next();
+    if (!this.isModified('password')) {
+      this.increment(); return next();
+    } 
     try {
       const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
       this.password = await bcrypt.hash(this.password, salt);

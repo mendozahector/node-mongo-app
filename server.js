@@ -13,7 +13,14 @@ app
     next();
   })
   .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-  .use('/', require('./routes'));
+  .use('/', require('./routes'))
+  .use(function (error, req, res, next) {
+    if(error instanceof SyntaxError){ //Handle SyntaxError here.
+      return res.status(400).send({ message : "Invalid JSON request body"});
+    } else {
+      next();
+    }
+  });
 
 process.on('uncaughtException', (err, origin) => {
   console.log(process.stderr.fd, `Caught exception: ${err}\n` + `Exception origin: ${origin}`);

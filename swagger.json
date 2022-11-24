@@ -10,7 +10,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "1.0.2"
+    "version": "1.0.3"
   },
   "servers": [
     {
@@ -30,10 +30,6 @@
     {
       "name": "users",
       "description": "Access to users in MongoDB"
-    },
-    {
-      "name": "not yet implemented",
-      "description": "On development"
     }
   ],
   "paths": {
@@ -213,9 +209,9 @@
         }
       },
       "put": {
-        "tags": ["not yet implemented"],
+        "tags": ["users"],
         "summary": "update user information by username",
-        "description": "",
+        "description": "Request body must contain the valid user password. All other fields are optional",
         "parameters": [
           {
             "name": "username",
@@ -228,10 +224,53 @@
         ],
         "responses": {
           "204": {
-            "description": "Successful Operation"
+            "description": "Successful Operation - User updated"
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "example": "newFirst"
+                  },
+                  "lastName": {
+                    "example": "newLast"
+                  },
+                  "username": {
+                    "example": "newUser"
+                  },
+                  "email": {
+                    "example": "newEmail"
+                  },
+                  "password": {
+                    "example": "CurrentPassword"
+                  }
+                }
+              }
+            }
           }
         }
       },

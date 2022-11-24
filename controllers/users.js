@@ -19,9 +19,9 @@ const getAll = (req, res) => {
 
 const getSingle = (req, res) => {
   const username = req.params.username;
-  User.find({ username: username })
+  User.findOne({ username: username })
     .then((data) => {
-      if (data === undefined || data.length == 0) {
+      if (data === null || data.length == 0) {
         res.status(400).send({ message: 'Could not find username ' + username + ' in the database.' });
       } else {
         res.status(200).send(data);
@@ -65,52 +65,60 @@ const insertUser = async (req, res) => {
     });
 };
 
-// const updateContact = async (req, res) => {
-//   const userId = new ObjectId(req.params.id);
-//   const firstName = req.body.firstName;
-//   const lastName = req.body.lastName;
-//   const email = req.body.email;
-//   const favoriteColor = req.body.favoriteColor;
-//   const birthday = req.body.birthday;
+const updateContact = async (req, res) => {
+  const username = req.params.username;
+  const password = req.body.password;
 
-//   let updatedContact = {};
-
-//   if (birthday && birthday.trim().length > 0) {
-//     if (myFunctions.isValidDate(birthday)) {
-//       updatedContact["birthday"] = birthday;
-//     } else {
-//       res.status(500).json("Invalid birthday. Format should be: yyyy-mm-dd.");
-//       return;
-//     }
-//   }
-
-//   if (firstName && firstName.trim().length > 0) {
-//     updatedContact["firstName"] = firstName;
-//   }
-
-//   if (lastName && lastName.trim().length > 0) {
-//     updatedContact["lastName"] = lastName;
-//   }
-
-//   if (email && email.trim().length > 0) {
-//     updatedContact["email"] = email;
-//   }
-
-//   if (favoriteColor && favoriteColor.trim().length > 0) {
-//     updatedContact["favoriteColor"] = favoriteColor;
-//   }
-
-//   const response = await mongodb
-//     .getDb()
-//     .db()
-//     .collection('contacts')
-//     .updateOne({ _id: userId }, { $set: updatedContact });
-//   if (response.modifiedCount > 0) {
-//     res.status(204).send();
-//   } else {
-//     res.status(500).json(response || 'Could not update the contact. Please try again.');
-//   }
-// }
+  if (!password) {
+    res.status(400).send({ message: 'Password field cannot be empty' });
+    return;
+  }
+  User.findOne({ username: username })
+    .then((user) => {
+      if (user === null || user.length == 0) {
+        res.status(400).send({ message: 'Could not find username ' + username + ' in the database.' });
+      } else {
+        user.validatePassword(password)
+        .then((valid) => {
+          if (!valid) {
+            res.status(400).send({ message: 'Password is not valid. Please try again.' });
+          } else {
+            let updatedUser = {}
+            if (req.body.firstName) {
+              updatedUser['firstName'] = req.body.firstName
+            }
+            if (req.body.lastName) {
+              updatedUser['lastName'] = req.body.lastName
+            }
+            if (req.body.username) {
+              updatedUser['username'] = req.body.username
+            }
+            if (req.body.email) {
+              updatedUser['email'] = req.body.email
+            }
+            Object.assign(user, updatedUser);
+            user.save()
+              .then((data) => {
+                res.status(204).send();
+              })
+              .catch((err) => {
+                if (err._message === 'users validation failed') {
+                  res.status(400).send({ message: err.message });
+                } else {
+                  console.log(err);
+                  res.status(500).send({ message: 'Could not update the user. Please try again later.' });
+                }
+              });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send({
+        message: 'Error getting user from database. Please try again later.'});
+    });
+}
 
 const deleteContact = (req, res) => {
   const username = req.params.username;
@@ -135,4 +143,4 @@ const deleteContact = (req, res) => {
     });
 };
 
-module.exports = { getAll, insertUser, getSingle, deleteContact };
+module.exports = { getAll, insertUser, getSingle, updateContact, deleteContact };
