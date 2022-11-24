@@ -49,6 +49,14 @@ const insertUser = async (req, res) => {
     email: req.body.email,
     password: req.body.password
   });
+
+  // Validate password
+  passwordValidation = newUser.isValidPassword(req.body.password);
+  if (passwordValidation.length > 0) {
+    res.status(400).send({ message: 'Invalid password: ' + passwordValidation[0]['message'] });
+    return;
+  }
+
   newUser
   .save()
     .then((data) => {

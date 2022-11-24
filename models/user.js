@@ -1,8 +1,19 @@
 module.exports = (mongoose) => {
   const bcrypt = require('bcryptjs');
   const { isEmail } = require('validator');
-  var uniqueValidator = require('mongoose-unique-validator')
+  var uniqueValidator = require('mongoose-unique-validator');
   const SALT_WORK_FACTOR = 10;
+  const passwordValidator = require('password-validator');
+
+  const passwordSchema = new passwordValidator();
+  // Add properties to it
+  passwordSchema
+  .is().min(8)                                    // Minimum length 8
+  .is().max(45)                                   // Maximum length 45
+  .has().uppercase()                              // Must have uppercase letters
+  .has().lowercase()                              // Must have lowercase letters
+  .has().digits()                                 // Must have at least 1 digit
+  .has().not().spaces()
 
   const userSchema = mongoose.Schema({
     username: {
@@ -39,6 +50,10 @@ module.exports = (mongoose) => {
       return next(err);
     }
   });
+
+  userSchema.methods.isValidPassword = function isValidPassword(password) {
+    return passwordSchema.validate(password, { details: true });
+  }
   
   userSchema.methods.validatePassword = async function validatePassword(data) {
     return bcrypt.compare(data, this.password);
