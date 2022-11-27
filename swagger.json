@@ -10,7 +10,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "1.0.3"
+    "version": "2.0.0"
   },
   "servers": [
     {
@@ -30,6 +30,10 @@
     {
       "name": "users",
       "description": "Access to users in MongoDB"
+    },
+    {
+      "name": "auth",
+      "description": "Authenticate by user login"
     }
   ],
   "paths": {
@@ -236,6 +240,16 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -272,7 +286,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
       },
       "delete": {
         "tags": ["users"],
@@ -298,6 +317,123 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": ["write"]
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "login user",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Successful Operation - User logged in"
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "example": "String"
+                  },
+                  "password": {
+                    "example": "String"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "delete": {
+        "tags": ["auth"],
+        "summary": "logout user",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Successful Operation - User deleted"
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationError"
                 }
               }
             }
@@ -391,6 +527,15 @@
           }
         }
       },
+      "AuthorizationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "User unauthorized."
+          }
+        }
+      },
       "ServerError": {
         "type": "object",
         "properties": {
@@ -406,8 +551,8 @@
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "http://localhost:3000/oauth/",
-            "tokenUrl": "http://localhost:3000/oauth/github",
+            "authorizationUrl": "http://localhost:3000/auth/",
+            "tokenUrl": "http://localhost:3000/auth/github",
             "scopes": {
               "write": "Grants write access"
             }

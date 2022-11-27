@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-
+const isAuth = require("../middleware/is-auth");
+const isNotAuth = require("../middleware/is-not-auth");
 const authController = require('../controllers/auth');
 
-router.get('/', authController.authorize);
+router.get('/', isNotAuth, authController.authorize);
 
-router.post('/login', authController.login);
-router.delete('/logout', authController.logout);
+router.post('/login', isNotAuth, authController.login);
+router.delete('/logout', isAuth, authController.logout);
 
-router.get('/github', authController.checkGitHub);
+router.get('/github', isNotAuth, authController.checkGitHub);
 
 module.exports = router;

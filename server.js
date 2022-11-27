@@ -5,8 +5,14 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const port = process.env.PORT || 3000;
 const app = express();
+const session = require('express-session');
 
 app
+  .use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false
+  }))
   .use(bodyParser.json())
   .use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

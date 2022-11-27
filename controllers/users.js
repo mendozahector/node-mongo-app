@@ -83,8 +83,8 @@ const updateContact = async (req, res) => {
     const username = req.params.username;
     const password = req.body.password;
 
-  if (!password) {
-    res.status(400).send({ message: 'Password field cannot be empty' });
+  if (!username || !password) {
+    res.status(400).send({ message: 'Username and password field cannot be empty' });
     return;
   }
   User.findOne({ username: username })
