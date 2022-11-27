@@ -428,7 +428,7 @@
         "description": "",
         "responses": {
           "200": {
-            "description": "Successful Operation - User deleted"
+            "description": "Successful Operation - User logged out"
           },
           "400": {
             "description": "Client Error",
