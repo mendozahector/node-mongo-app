@@ -1,6 +1,7 @@
 const e = require('express');
 const db = require('../models');
 const User = db.user;
+const myFunctions = require('../library/functions');
 
 
 const getAll = (req, res) => {
@@ -37,8 +38,13 @@ const getSingle = (req, res) => {
 const insertUser = async (req, res) => {
   try {
     // Validate request
-  if (!req.body.username || !req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
+  if (!req.body.username || !req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password || !req.body.birthdate) {
     res.status(400).send({ message: 'Fields can not be empty!' });
+    return;
+  }
+
+  if (!myFunctions.isValidDate(req.body.birthdate)) {
+    res.status(400).send({ message: "Invalid birthdate. Format should be: yyyy-mm-dd." });
     return;
   }
 
@@ -47,7 +53,9 @@ const insertUser = async (req, res) => {
     lastName: req.body.lastName,
     username: req.body.username,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    birthdate: new Date(req.body.birthdate),
+    middleName: req.body.middleName
   });
 
   // Validate password
@@ -97,9 +105,22 @@ const updateContact = async (req, res) => {
           if (!valid) {
             res.status(400).send({ message: 'Password is not valid. Please try again.' });
           } else {
+            
             let updatedUser = {}
+
+            if (req.body.birthdate) {
+              if (!myFunctions.isValidDate(req.body.birthday)) {
+                res.status(400).send({ message: "Invalid birthday. Format should be: yyyy-mm-dd." });
+                return;
+              }
+              updatedUser['birthdate'] = new Date(req.body.birthdate)
+            }
+
             if (req.body.firstName) {
               updatedUser['firstName'] = req.body.firstName
+            }
+            if (req.body.middleName) {
+              updatedUser['middleName'] = req.body.middleName
             }
             if (req.body.lastName) {
               updatedUser['lastName'] = req.body.lastName

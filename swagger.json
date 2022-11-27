@@ -143,19 +143,25 @@
                 "type": "object",
                 "properties": {
                   "firstName": {
-                    "example": "String"
+                    "example": "newFirst"
+                  },
+                  "middleName": {
+                    "example": "Optional"
                   },
                   "lastName": {
-                    "example": "String"
+                    "example": "newLast"
+                  },
+                  "birthdate": {
+                    "example": "yyyy-mm-dd"
                   },
                   "username": {
-                    "example": "String"
+                    "example": "newUser"
                   },
                   "email": {
-                    "example": "String"
+                    "example": "newEmail"
                   },
                   "password": {
-                    "example": "String"
+                    "example": "CurrentPassword"
                   }
                 }
               }
@@ -270,8 +276,14 @@
                   "firstName": {
                     "example": "newFirst"
                   },
+                  "middleName": {
+                    "example": "Optional"
+                  },
                   "lastName": {
                     "example": "newLast"
+                  },
+                  "birthdate": {
+                    "example": "yyyy-mm-dd"
                   },
                   "username": {
                     "example": "newUser"
@@ -477,7 +489,7 @@
           "_id": {
             "type": "object",
             "format": "object",
-            "example": "\"6375c456caec5ce8bb60df54"
+            "example": "\"6375c456caec5ce8bb60df54\""
           },
           "username": {
             "type": "string",
@@ -487,6 +499,10 @@
             "type": "string",
             "example": "John"
           },
+          "middleName": {
+            "type": "string",
+            "example": "Sebastian"
+          },
           "lastName": {
             "type": "string",
             "example": "James"
@@ -494,6 +510,10 @@
           "email": {
             "type": "string",
             "example": "john@email.com"
+          },
+          "birthdate": {
+            "type": "string",
+            "example": "1990-12-13T00:00:00.000Z"
           },
           "password": {
             "type": "string",
@@ -551,8 +571,8 @@
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "http://localhost:3000/auth/",
-            "tokenUrl": "http://localhost:3000/auth/github",
+            "authorizationUrl": "https://mendozahectorapi.onrender.com/auth/",
+            "tokenUrl": "https://mendozahectorapi.onrender.com/github",
             "scopes": {
               "write": "Grants write access"
             }

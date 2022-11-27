@@ -22,6 +22,9 @@ module.exports = (mongoose) => {
     firstName: {
       type: String, required: true
     },
+    middleName: {
+      type: String, required: false
+    },
     lastName: {
       type: String, required: true
     },
@@ -33,7 +36,10 @@ module.exports = (mongoose) => {
     },
     password: {
       type: String, required: true
-    }
+    },
+    birthdate: {
+      type: Date, required: true
+    },
   });
 
   userSchema.plugin(uniqueValidator);
