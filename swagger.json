@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "My API - OpenAPI 3.0",
+    "title": "My NodeJS Demo with OpenAPI 3.0",
     "description": "\nDeveloping a secure REST API that performs CRUD operations on a NoSQL database.\n\nBy: Hector Mendoza\n\n[mendozahector.github.io](https://mendozahector.github.io/)\n\n\n\nTech Stack:\n- [Node.js / Express](https://expressjs.com/en/starter/hello-world.html)\n- [MongoDB](https://www.mongodb.com/docs/drivers/node/current/quick-start/)\n- [Mongoose](https://www.npmjs.com/package/mongoose)\n- [SwaggerUI](https://www.npmjs.com/package/swagger-ui-express)",
     "contact": {
       "email": "hectormmendozar@outlook.com"
@@ -397,6 +397,20 @@
           "message": {
             "type": "string",
             "example": "Server error occured. Please try again later."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "http://localhost:3000/oauth/",
+            "tokenUrl": "http://localhost:3000/oauth/github",
+            "scopes": {
+              "write": "Grants write access"
+            }
           }
         }
       }

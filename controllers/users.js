@@ -161,4 +161,4 @@ const deleteContact = (req, res) => {
     });
 };
 
-module.exports = { getAll, insertUser, getSingle, updateContact, deleteContact };
+module.exports = { getAll, insertUser, getSingle, updateContact, deleteContact};
